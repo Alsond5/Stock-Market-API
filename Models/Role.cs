@@ -16,15 +16,15 @@ namespace StockMarket.Models
             {
                 case "User":
                     this.RoleName = roleName;
-                    this.RoleId = 0;
+                    this.RoleId = 1;
                     break;
                 case "Admin":
                     this.RoleName = roleName;
-                    this.RoleId = 1;
+                    this.RoleId = 2;
                     break;
                 default:
                     this.RoleName = "User";
-                    this.RoleId = 0;
+                    this.RoleId = 1;
                     break;
             }
         }

@@ -13,8 +13,8 @@ namespace StockMarket.Models
         public string Password { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public int RoleId { get; set; }
-        public Role Role { get; set; } = Role.User();
+        public int RoleId { get; set; } = 1;
+        public Role? Role { get; set; }
 
         public Balance? Balance { get; set; }
 

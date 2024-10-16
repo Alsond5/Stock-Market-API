@@ -2,24 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StockMarket.Data;
+using StockMarket.Services;
 
 namespace StockMarket.Controllers
 {
-    [Route("api/auth")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly StockMarketDBContext _stockMarketDBContext;
+        private readonly IUserServices _userServices;
 
-        public UserController(StockMarketDBContext stockMarketDBContext) {
-            this._stockMarketDBContext = stockMarketDBContext;
+        public UserController(IUserServices userServices) {
+            _userServices = userServices;
         }
 
-        [HttpPost("register")]
-        public IActionResult Register() {
-            return Ok("200");
+        [Authorize]
+        [HttpGet("@me")]
+        public async Task<IActionResult> GetCurrentUser() {
+            if (User.Identity?.Name == null) return BadRequest("400");
+
+            var user = await _userServices.GetUserByUsernameOrEmailAsync(User.Identity.Name);
+
+            return Ok(user);
         }
     }
 }

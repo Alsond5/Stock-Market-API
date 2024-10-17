@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace StockMarket.Dtos.User
 {
-    public class CreateUserRequestDTO
+    public class UpdateUserRequestDTO
     {
-        public string Username { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        public string? Username { get; set; } = string.Empty;
+        public string? Email { get; set; } = string.Empty;
+        public string? Password { get; set; } = string.Empty;
         public int? RoleId { get; set; }
         public int? Balance { get; set; }
     }

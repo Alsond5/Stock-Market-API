@@ -9,6 +9,8 @@ namespace StockMarket.Models
     {
         public int PortfolioId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public int TotalStocks { get; set; } = 0;
+        public int TotalStockQuantity { get; set; } = 0;
         
         public int UserId { get; set; }
         public User? User { get; set; }

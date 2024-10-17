@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StockMarket.Models
+namespace StockMarket.Dtos.Balance
 {
-    public class Balance
+    public class BalanceDTO
     {
         public int BalanceId { get; set; }
         public int Amount { get; set; } = 0;
-        
-        public int UserId { get; set; }
-        public User? User { get; set; }
     }
 }

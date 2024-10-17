@@ -16,9 +16,9 @@ namespace StockMarket.Models
         public int RoleId { get; set; } = 1;
         public Role? Role { get; set; }
 
-        public Balance? Balance { get; set; }
+        public Balance Balance { get; set; } = new Balance();
 
-        public Portfolio? Portfolio { get; set; }
+        public Portfolio Portfolio { get; set; } = new Portfolio();
 
         public ICollection<Alert> Alerts { get; set; } = new List<Alert>();
     }

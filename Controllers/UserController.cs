@@ -28,5 +28,15 @@ namespace StockMarket.Controllers
 
             return Ok(user);
         }
+
+        [Authorize]
+        [HttpGet("@me/balance")]
+        public async Task<IActionResult> GetCurrentUserBalance() {
+            if (User.Identity?.Name == null) return BadRequest("400");
+
+            var balance = await _userServices.GetBalanceAsync(User);
+
+            return Ok(balance);
+        }
     }
 }

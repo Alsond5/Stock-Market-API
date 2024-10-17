@@ -20,8 +20,8 @@ namespace StockMarket.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] CreateUserRequestDto user) {
-            var createdUser = await _userServices.CreateUserAsync(user);
+        public async Task<IActionResult> Register([FromBody] CreateUserRequestDTO user) {
+            var createdUser = await _userServices.CreateUserAsync(user, User);
 
             if (createdUser == null) return BadRequest("400");
 

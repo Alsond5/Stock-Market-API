@@ -8,6 +8,6 @@ namespace StockMarket.Dtos.Balance
     public class BalanceDTO
     {
         public int BalanceId { get; set; }
-        public int Amount { get; set; } = 0;
+        public decimal Amount { get; set; } = 0;
     }
 }

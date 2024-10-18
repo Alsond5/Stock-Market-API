@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +9,8 @@ namespace StockMarket.Models
     public class Balance
     {
         public int BalanceId { get; set; }
-        public int Amount { get; set; } = 0;
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Amount { get; set; } = 0;
         
         public int UserId { get; set; }
         public User? User { get; set; }

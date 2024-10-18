@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockMarket.Data;
 
@@ -11,9 +12,11 @@ using StockMarket.Data;
 namespace StockMarket.Migrations
 {
     [DbContext(typeof(StockMarketDBContext))]
-    partial class StockMarketDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241018125849_EditPricesTypes")]
+    partial class EditPricesTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

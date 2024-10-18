@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,9 @@ namespace StockMarket.Models
         public int StockId { get; set; }
         public Stock? Stock { get; set; }
 
-        public int LowerLimit { get; set; }
-        public int UpperLimit { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal LowerLimit { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal UpperLimit { get; set; }
     }
 }

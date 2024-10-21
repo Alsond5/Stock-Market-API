@@ -36,5 +36,19 @@ namespace StockMarket.Services
 
             return stocks;
         }
+
+        public async Task<Stock?> ActivateStockAsync(int stockId) {
+            var stock = await _stockRepository.ActivateStockAsync(stockId);
+
+            if (stock == null) return null;
+
+            return stock;
+        }
+
+        public async Task<Stock?> ActivateAllStocksAsync() {
+            var stock = await _stockRepository.ActivateAllStocksAsync();
+
+            return stock;
+        }
     }
 }

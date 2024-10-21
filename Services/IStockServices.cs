@@ -11,5 +11,7 @@ namespace StockMarket.Services
         Task<IEnumerable<Stock>> GetAllStocksAsync();
         Task<Stock?> DeactivateStockAsync(int stockId);
         Task<IEnumerable<Stock>> DeactivateAllStocksAsync();
+        Task<Stock?> ActivateStockAsync(int stockId);
+        Task<Stock?> ActivateAllStocksAsync();
     }
 }

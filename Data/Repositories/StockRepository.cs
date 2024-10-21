@@ -65,6 +65,33 @@ namespace StockMarket.Data.Repositories
             return stocks;
         }
 
+        public async Task<Stock?> ActivateStockAsync(int stockId)
+        {
+            var stock = await GetStockByIdAsync(stockId);
+
+            if (stock == null) return null;
+
+            stock.IsActive = true;
+
+            await _context.SaveChangesAsync();
+
+            return stock;
+        }
+
+        public async Task<Stock?> ActivateAllStocksAsync()
+        {
+            var stocks = _context.Stocks;
+
+            foreach (var stock in stocks)
+            {
+                stock.IsActive = true;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return null;
+        }
+
         public async Task<Stock?> UpdateStockAsync(int stockId, Stock stock)
         {
             var _stock = await GetStockByIdAsync(stockId);

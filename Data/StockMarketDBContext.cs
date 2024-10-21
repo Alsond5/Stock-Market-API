@@ -7,7 +7,7 @@ using StockMarket.Models;
 
 namespace StockMarket.Data
 {
-    public class StockMarketDBContext : DbContext
+    public class StockMarketDBContext(DbContextOptions dbContextOptions) : DbContext(dbContextOptions)
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -19,11 +19,7 @@ namespace StockMarket.Data
         public DbSet<Portfolio> Portfolios { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-
-        public StockMarketDBContext(DbContextOptions dbContextOptions)
-        : base(dbContextOptions) {
-            
-        }
+        public DbSet<Models.System> System { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

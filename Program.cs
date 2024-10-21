@@ -35,8 +35,12 @@ builder.Services.AddAuthentication(options => {
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBalanceRepository, BalanceRepository>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+builder.Services.AddScoped<IStockRepository, StockRepository>();
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 
 builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<IStockServices, StockServices>();
+builder.Services.AddScoped<ICouponServices, CouponServices>();
 builder.Services.AddScoped<IHashServices, HashServices>();
 
 builder.Services.AddEndpointsApiExplorer();

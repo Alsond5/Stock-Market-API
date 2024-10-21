@@ -25,6 +25,7 @@ namespace StockMarket.Services
             IUserRepository userRepository,
             IBalanceRepository balanceRepository,
             IPortfolioRepository portfolioRepository,
+            IStockRepository stockRepository,
             IHashServices hashServices,
             IConfiguration configuration
         ) {

@@ -11,13 +11,9 @@ namespace StockMarket.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController(IUserServices userServices) : ControllerBase
     {
-        private readonly IUserServices _userServices;
-
-        public AuthController(IUserServices userServices) {
-            _userServices = userServices;
-        }
+        private readonly IUserServices _userServices = userServices;
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] CreateUserRequestDTO user) {

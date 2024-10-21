@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StockMarket.Attributes;
+using StockMarket.Dtos.Coupon;
 using StockMarket.Dtos.User;
 using StockMarket.Services;
 
@@ -13,13 +14,9 @@ namespace StockMarket.Controllers
     [Route("api/admin")]
     [ApiController]
     [Authorize]
-    public class AdminController : ControllerBase
+    public class AdminController(IUserServices userServices) : ControllerBase
     {
-        private readonly IUserServices _userServices;
-
-        public AdminController(IUserServices userServices) {
-            _userServices = userServices;
-        }
+        private readonly IUserServices _userServices = userServices;
 
         [HttpGet("users")]
         [RoleAuthorize(2)]

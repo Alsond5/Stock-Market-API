@@ -6,29 +6,29 @@ using StockMarket.Data.Repositories;
 
 namespace StockMarket.Services
 {
-    public class ConfigServices(ISystemRepository configRepository) : ISystemServices
+    public class SystemServices(ISystemRepository systemRepository) : ISystemServices
     {
-        private readonly ISystemRepository _configRepository = configRepository;
+        private readonly ISystemRepository _systemRepository = systemRepository;
 
         public async Task<string?> GetConfigValueAsync(string key)
         {
-            var config = await _configRepository.GetConfigByKeyAsync(key);
+            var config = await _systemRepository.GetConfigByKeyAsync(key);
             return config?.Value;
         }
 
         public async Task<bool> SetConfigValueAsync(string key, string value)
         {
-            var config = await _configRepository.GetConfigByKeyAsync(key);
+            var config = await _systemRepository.GetConfigByKeyAsync(key);
 
             if (config == null)
             {
                 config = new Models.System { Key = key, Value = value };
-                await _configRepository.AddConfigAsync(config);
+                await _systemRepository.AddConfigAsync(config);
             }
             else
             {
                 config.Value = value;
-                await _configRepository.UpdateConfigAsync(config);
+                await _systemRepository.UpdateConfigAsync(config);
             }
 
             return true;
@@ -36,11 +36,11 @@ namespace StockMarket.Services
 
         public async Task<bool> DeleteConfigValueAsync(string key)
         {
-            var config = await _configRepository.GetConfigByKeyAsync(key);
+            var config = await _systemRepository.GetConfigByKeyAsync(key);
 
             if (config == null) return false;
 
-            await _configRepository.DeleteConfigAsync(config.Id);
+            await _systemRepository.DeleteConfigAsync(config.Id);
 
             return true;
         }

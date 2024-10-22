@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace StockMarket.Models
@@ -11,6 +12,7 @@ namespace StockMarket.Models
         public int Quantity { get; set; }
 
         public int PortfolioId { get; set; }
+        [JsonIgnore]
         public Portfolio? Portfolio { get; set; }
 
         public int StockId { get; set; }

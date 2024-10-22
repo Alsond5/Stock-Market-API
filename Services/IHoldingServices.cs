@@ -12,7 +12,7 @@ namespace StockMarket.Services
         Task<IEnumerable<Holding>> GetAllHoldingsAsync();
         Task<IEnumerable<Holding>> GetHoldingByPortfolioIdAsync(int portfolioId);
         Task<Holding?> GetHoldingByPortfolioIdAndStockIdAsync(int portfolioId, int stockId);
-        Task<Holding?> Buy(BuySellRequestDTO buyRequest, int userId);
-        Task<Holding?> Sell(BuySellRequestDTO sellRequest, int userId);
+        Task<HoldingDTO?> Buy(BuySellRequestDTO buyRequest, int userId);
+        Task<HoldingDTO?> Sell(BuySellRequestDTO sellRequest, int userId);
     }
 }

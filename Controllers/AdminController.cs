@@ -73,7 +73,7 @@ namespace StockMarket.Controllers
         public async Task<IActionResult> GetSystemBalance() {
             var balance = await _systemServices.GetConfigValueAsync("systemBalance");
 
-            return Ok(balance);
+            return Ok(balance ?? "0");
         }
     }
 }

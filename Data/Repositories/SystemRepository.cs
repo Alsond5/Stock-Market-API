@@ -7,7 +7,7 @@ using StockMarket.Models;
 
 namespace StockMarket.Data.Repositories
 {
-    public class ConfigRepository(StockMarketDBContext context) : ISystemRepository
+    public class SystemRepository(StockMarketDBContext context) : ISystemRepository
     {
         private readonly StockMarketDBContext _context = context;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace StockMarket.Models
@@ -17,7 +18,7 @@ namespace StockMarket.Models
         public Role? Role { get; set; }
 
         public Balance Balance { get; set; } = new Balance();
-
+        [JsonIgnore]
         public Portfolio Portfolio { get; set; } = new Portfolio();
 
         public ICollection<Alert> Alerts { get; set; } = new List<Alert>();

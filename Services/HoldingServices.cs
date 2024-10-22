@@ -13,7 +13,8 @@ namespace StockMarket.Services
         IStockRepository stockRepository,
         IPortfolioRepository portfolioRepository,
         IUserRepository userRepository,
-        ISystemServices systemServices
+        ISystemServices systemServices,
+        ITransactionServices transactionServices
     ) : IHoldingServices
     {
         private readonly IHoldingRepository _holdingRepository = holdingRepository;
@@ -21,6 +22,7 @@ namespace StockMarket.Services
         private readonly IPortfolioRepository _portfolioRepository = portfolioRepository;
         private readonly IUserRepository _userRepository = userRepository;
         private readonly ISystemServices _systemServices = systemServices;
+        private readonly ITransactionServices _transactionServices = transactionServices;
 
         public async Task<IEnumerable<Holding>> GetAllHoldingsAsync()
         {
@@ -43,7 +45,7 @@ namespace StockMarket.Services
             return holding;
         }
 
-        public async Task<Holding?> Buy(BuySellRequestDTO buyRequest, int userId)
+        public async Task<HoldingDTO?> Buy(BuySellRequestDTO buyRequest, int userId)
         {
             var stock = await _stockRepository.GetStockByIdAsync(buyRequest.StockId);
             if (stock == null || stock.IsActive == false) return null;
@@ -98,10 +100,30 @@ namespace StockMarket.Services
             systemBalanceAmount += commission;
             await _systemServices.SetConfigValueAsync("systemBalance", systemBalanceAmount.ToString());
 
-            return holding;
+            var transaction = new Transaction
+            {
+                StockId = stock.StockId,
+                UserId = user.UserId,
+                Quantity = buyRequest.Quantity,
+                Commission = commission,
+                TransactionType = "buy",
+                TransactionDate = DateTime.Now,
+                PricePerUnit = stock.Price
+            };
+
+            await _transactionServices.CreateTransactionAsync(transaction);
+
+            return new HoldingDTO
+            {
+                Quantity = holding.Quantity,
+                UserId = user.UserId,
+                Balance = user.Balance.Amount,
+                PortfolioId = portfolio.PortfolioId,
+                StockId = stock.StockId
+            };
         }
 
-        public async Task<Holding?> Sell(BuySellRequestDTO sellRequest, int userId)
+        public async Task<HoldingDTO?> Sell(BuySellRequestDTO sellRequest, int userId)
         {
             var stock = await _stockRepository.GetStockByIdAsync(sellRequest.StockId);
             if (stock == null || stock.IsActive == false) return null;
@@ -150,7 +172,28 @@ namespace StockMarket.Services
             systemBalanceAmount += commission;
             await _systemServices.SetConfigValueAsync("systemBalance", systemBalanceAmount.ToString());
 
-            return holding;
+            var transaction = new Transaction
+            {
+                StockId = stock.StockId,
+                UserId = user.UserId,
+                Quantity = sellRequest.Quantity,
+                Commission = commission,
+                TransactionType = "sell",
+                TransactionDate = DateTime.Now,
+                PricePerUnit = stock.Price
+            };
+
+            await _transactionServices.CreateTransactionAsync(transaction);
+
+
+            return new HoldingDTO
+            {
+                Quantity = holding.Quantity,
+                UserId = user.UserId,
+                Balance = user.Balance.Amount,
+                PortfolioId = portfolio.PortfolioId,
+                StockId = stock.StockId
+            };
         }
     }
 }

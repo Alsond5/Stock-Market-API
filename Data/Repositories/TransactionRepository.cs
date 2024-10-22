@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Microsoft.EntityFrameworkCore;
+using StockMarket.Models;
 
 namespace StockMarket.Data.Repositories
 {
@@ -51,7 +52,7 @@ namespace StockMarket.Data.Repositories
 
         public async Task<IEnumerable<Models.Transaction>> GetTransactionsByDateRangeAsync(DateTime startDate, DateTime endDate, int userId)
         {
-            return await _context.Transactions.Where(transaction => transaction.TransactionDate >= startDate && transaction.TransactionDate <= endDate && transaction.UserId == userId).ToListAsync();
+            return await _context.Transactions.Where(transaction => transaction.TransactionDate >= startDate && transaction.TransactionDate <= endDate && transaction.UserId == userId).Include(s => s.Stock).ToListAsync();
         }
 
         public async Task<IEnumerable<Models.Transaction>> GetTransactionsByDateRangeAndStockAsync(DateTime startDate, DateTime endDate, int stockId, int userId)

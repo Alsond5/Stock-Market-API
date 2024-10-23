@@ -20,5 +20,7 @@ namespace StockMarket.Models
         public decimal LowerLimit { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal UpperLimit { get; set; }
+        public bool WasTriggeredBelow { get; set; } = false;
+        public bool WasTriggeredAbove { get; set; } = false;
     }
 }

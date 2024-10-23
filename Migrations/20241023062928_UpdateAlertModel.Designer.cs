@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockMarket.Data;
 
@@ -11,9 +12,11 @@ using StockMarket.Data;
 namespace StockMarket.Migrations
 {
     [DbContext(typeof(StockMarketDBContext))]
-    partial class StockMarketDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241023062928_UpdateAlertModel")]
+    partial class UpdateAlertModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +33,9 @@ namespace StockMarket.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlertId"));
 
+                    b.Property<bool>("IsTriggered")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("LowerLimit")
                         .HasColumnType("decimal(18,2)");
 
@@ -41,12 +47,6 @@ namespace StockMarket.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("WasTriggeredAbove")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WasTriggeredBelow")
-                        .HasColumnType("bit");
 
                     b.HasKey("AlertId");
 

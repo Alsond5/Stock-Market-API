@@ -15,7 +15,7 @@ namespace StockMarket.Data.Repositories
         Task<Stock?> DeactivateStockAsync(int stockId);
         Task<IEnumerable<Stock>> DeactivateAllStocksAsync();
         Task<Stock?> ActivateStockAsync(int stockId);
-        Task<Stock?> ActivateAllStocksAsync();
+        Task<IEnumerable<Stock>> ActivateAllStocksAsync();
         Task<Stock?> UpdateStockAsync(int stockId, Stock stock);
         Task<bool> DeleteStockAsync(int stockId);
     }

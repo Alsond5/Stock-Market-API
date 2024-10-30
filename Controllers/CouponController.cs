@@ -11,7 +11,7 @@ using StockMarket.Services;
 
 namespace StockMarket.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/coupons")]
     [ApiController]
     public class CouponController(ICouponServices couponServices) : ControllerBase
     {

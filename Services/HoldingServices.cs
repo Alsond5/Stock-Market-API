@@ -24,25 +24,87 @@ namespace StockMarket.Services
         private readonly ISystemServices _systemServices = systemServices;
         private readonly ITransactionServices _transactionServices = transactionServices;
 
-        public async Task<IEnumerable<Holding>> GetAllHoldingsAsync()
+        public async Task<IEnumerable<HoldingDTO>> GetAllHoldingsAsync()
         {
             var holdings = await _holdingRepository.GetAllHoldingsAsync();
+            if (holdings == null) return [];
 
-            return holdings;
+            var holdingDTOs = holdings.Select(holding => new HoldingDTO
+            {
+                HoldingId = holding.Id,
+                Quantity = holding.Quantity,
+                PortfolioId = holding.PortfolioId,
+                Stock = new Dtos.Stock.StockDTO
+                {
+                    StockId = holding.StockId,
+                    StockSymbol = holding.Stock!.StockSymbol,
+                    StockName = holding.Stock.StockName,
+                    StockQuantity = holding.Stock.Quantity,
+                    Price = holding.Stock.Price
+                }
+            });
+
+            return holdingDTOs;
         }
 
-        public async Task<IEnumerable<Holding>> GetHoldingByPortfolioIdAsync(int portfolioId)
+        public async Task<HoldingDTO?> GetHoldingByIdAsync(int userId, int holdingId)
+        {
+            var holding = await _holdingRepository.GetHoldingByIdAsync(userId, holdingId);
+
+            return holding == null ? null : new HoldingDTO
+            {
+                HoldingId = holding.Id,
+                Quantity = holding.Quantity,
+                PortfolioId = holding.PortfolioId,
+                Stock = new Dtos.Stock.StockDTO
+                {
+                    StockId = holding.StockId,
+                    StockSymbol = holding.Stock!.StockSymbol,
+                    StockName = holding.Stock.StockName,
+                    StockQuantity = holding.Stock.Quantity,
+                    Price = holding.Stock.Price
+                }
+            };
+        }
+
+        public async Task<IEnumerable<HoldingDTO>> GetHoldingByPortfolioIdAsync(int portfolioId)
         {
             var holdings = await _holdingRepository.GetHoldingByPortfolioIdAsync(portfolioId);
 
-            return holdings;
+            return holdings.Select(holding => new HoldingDTO
+            {
+                HoldingId = holding.Id,
+                Quantity = holding.Quantity,
+                PortfolioId = holding.PortfolioId,
+                Stock = new Dtos.Stock.StockDTO
+                {
+                    StockId = holding.StockId,
+                    StockSymbol = holding.Stock!.StockSymbol,
+                    StockName = holding.Stock.StockName,
+                    StockQuantity = holding.Stock.Quantity,
+                    Price = holding.Stock.Price
+                }
+            });
         }
 
-        public async Task<Holding?> GetHoldingByPortfolioIdAndStockIdAsync(int portfolioId, int stockId)
+        public async Task<HoldingDTO?> GetHoldingByPortfolioIdAndStockIdAsync(int portfolioId, int stockId)
         {
             var holding = await _holdingRepository.GetHoldingByPortfolioIdAndStockIdAsync(portfolioId, stockId);
 
-            return holding;
+            return holding == null ? null : new HoldingDTO
+            {
+                HoldingId = holding.Id,
+                Quantity = holding.Quantity,
+                PortfolioId = holding.PortfolioId,
+                Stock = new Dtos.Stock.StockDTO
+                {
+                    StockId = holding.StockId,
+                    StockSymbol = holding.Stock!.StockSymbol,
+                    StockName = holding.Stock.StockName,
+                    StockQuantity = holding.Stock.Quantity,
+                    Price = holding.Stock.Price
+                }
+            };
         }
 
         public async Task<HoldingDTO?> Buy(BuySellRequestDTO buyRequest, int userId)
@@ -115,11 +177,17 @@ namespace StockMarket.Services
 
             return new HoldingDTO
             {
+                HoldingId = holding.Id,
                 Quantity = holding.Quantity,
-                UserId = user.UserId,
-                Balance = user.Balance.Amount,
-                PortfolioId = portfolio.PortfolioId,
-                StockId = stock.StockId
+                PortfolioId = holding.PortfolioId,
+                Stock = new Dtos.Stock.StockDTO
+                {
+                    StockId = holding.StockId,
+                    StockSymbol = holding.Stock!.StockSymbol,
+                    StockName = holding.Stock.StockName,
+                    StockQuantity = holding.Stock.Quantity,
+                    Price = holding.Stock.Price
+                }
             };
         }
 
@@ -188,11 +256,17 @@ namespace StockMarket.Services
 
             return new HoldingDTO
             {
+                HoldingId = holding.Id,
                 Quantity = holding.Quantity,
-                UserId = user.UserId,
-                Balance = user.Balance.Amount,
-                PortfolioId = portfolio.PortfolioId,
-                StockId = stock.StockId
+                PortfolioId = holding.PortfolioId,
+                Stock = new Dtos.Stock.StockDTO
+                {
+                    StockId = holding.StockId,
+                    StockSymbol = holding.Stock!.StockSymbol,
+                    StockName = holding.Stock.StockName,
+                    StockQuantity = holding.Stock.Quantity,
+                    Price = holding.Stock.Price
+                }
             };
         }
     }

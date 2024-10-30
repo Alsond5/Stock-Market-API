@@ -9,9 +9,10 @@ namespace StockMarket.Services
 {
     public interface IHoldingServices
     {
-        Task<IEnumerable<Holding>> GetAllHoldingsAsync();
-        Task<IEnumerable<Holding>> GetHoldingByPortfolioIdAsync(int portfolioId);
-        Task<Holding?> GetHoldingByPortfolioIdAndStockIdAsync(int portfolioId, int stockId);
+        Task<IEnumerable<HoldingDTO>> GetAllHoldingsAsync();
+        Task<HoldingDTO?> GetHoldingByIdAsync(int userId, int holdingId);
+        Task<IEnumerable<HoldingDTO>> GetHoldingByPortfolioIdAsync(int portfolioId);
+        Task<HoldingDTO?> GetHoldingByPortfolioIdAndStockIdAsync(int portfolioId, int stockId);
         Task<HoldingDTO?> Buy(BuySellRequestDTO buyRequest, int userId);
         Task<HoldingDTO?> Sell(BuySellRequestDTO sellRequest, int userId);
     }

@@ -43,14 +43,14 @@ namespace StockMarket.Services
                 UserId = user.UserId,
                 Username = user.Username,
                 Email = user.Email,
+                Balance = user.Balance.Amount,
                 CreatedAt = user.CreatedAt,
                 RoleId = user.RoleId
             });
         }
 
-        public async Task<UserDTO?> CreateUserAsync(CreateUserRequestDTO user, ClaimsPrincipal claims) {
+        public async Task<UserDTO?> CreateUserAsync(CreateUserRequestDTO user) {
             var _user = await _userRepository.GetUserIfExistingAsync(user.Username, user.Email);
-
             if (_user != null) return null;
 
             user.Password = _hashServices.ComputeSha256Hash(user.Password);
@@ -60,12 +60,11 @@ namespace StockMarket.Services
                 Email = user.Email,
                 Password = user.Password,
                 CreatedAt = DateTime.Now,
-                RoleId = claims.IsInRole("2") ? user.RoleId ?? 1 : 1,
-                Balance = claims.IsInRole("2") ? new Balance { Amount = user.Balance ?? 0 } : new Balance { Amount = 0 }
+                RoleId = user.RoleId ?? 1,
+                Balance = new Balance { Amount = user.Balance ?? 0 }
             };
 
             var createdUser = await _userRepository.AddUserAsync(newUser);
-
             if (createdUser == null) return null;
 
             return new UserDTO {
@@ -112,36 +111,6 @@ namespace StockMarket.Services
                 TotalStocks = portfolio?.TotalStocks,
                 TotalStockQuantity = portfolio?.TotalStockQuantity
             };
-        }
-        
-        public async Task<JwtSecurityToken?> LoginAsync(LoginRequestDTO loginRequest) {
-            var _user = await _userRepository.GetUserByUsernameOrEmailAsync(loginRequest.UsernameOrEmail);
-            if (_user == null) return null;
-
-            if (_hashServices.VerifyPassword(_user.Password, loginRequest.Password) == false) {
-                return null;
-            }
-
-            var claims = new[] {
-                new Claim(ClaimTypes.NameIdentifier, _user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, loginRequest.UsernameOrEmail),
-                new Claim(ClaimTypes.Role, _user.RoleId.ToString())
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"] ?? "WMDPFnnHcJK/7jjwW36YB0mQWoOJzG1ugA/r2FNdCYo="));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            Console.WriteLine(key);
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JwtSettings:Issuer"],
-                audience: _configuration["JwtSettings:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: credentials
-            );
-            
-            return token;
         }
         
         public async Task<UserDTO> GetUserByUsernameOrEmailAsync(string usernameOrEmail) {

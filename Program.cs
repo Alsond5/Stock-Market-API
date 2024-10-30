@@ -50,6 +50,7 @@ builder.Services.AddScoped<ISystemServices, SystemServices>();
 builder.Services.AddScoped<ITransactionServices, TransactionServices>();
 builder.Services.AddScoped<IAlertServices, AlertServices>();
 builder.Services.AddScoped<IHashServices, HashServices>();
+builder.Services.AddScoped<IAuthServices, AuthServices>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {

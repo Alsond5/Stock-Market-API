@@ -11,14 +11,13 @@ namespace StockMarket.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthController(IUserServices userServices) : ControllerBase
+    public class AuthController(IAuthServices authServices) : ControllerBase
     {
-        private readonly IUserServices _userServices = userServices;
+        private readonly IAuthServices _authServices = authServices;
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] CreateUserRequestDTO user) {
-            var createdUser = await _userServices.CreateUserAsync(user, User);
-
+            var createdUser = await _authServices.RegisterAsync(user);
             if (createdUser == null) return BadRequest("400");
 
             return Ok(createdUser);
@@ -26,13 +25,10 @@ namespace StockMarket.Controllers
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest) {
-            var token = await _userServices.LoginAsync(loginRequest);
-
+            var token = await _authServices.LoginAsync(loginRequest);
             if (token == null) return BadRequest("400");
 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return Ok(tokenString);
+            return Ok(token);
         }
     }
 }

@@ -15,8 +15,7 @@ namespace StockMarket.Services
         Task<IEnumerable<UserDTO>> GetUsersAsync();
         Task<UserDTO?> GetUserByIdAsync(int userId);
         Task<UserDetailsDTO?> GetUserDetailsByUserIdAsync(int userId);
-        Task<UserDTO?> CreateUserAsync(CreateUserRequestDTO user, ClaimsPrincipal claims);
-        Task<JwtSecurityToken?> LoginAsync(LoginRequestDTO loginRequest);
+        Task<UserDTO?> CreateUserAsync(CreateUserRequestDTO user);
         Task<UserDTO> GetUserByUsernameOrEmailAsync(string usernameOrEmail);
         Task<BalanceDTO?> GetBalanceAsync(ClaimsPrincipal claims);
         Task<BalanceDTO?> GetBalanceAsync(int userId);

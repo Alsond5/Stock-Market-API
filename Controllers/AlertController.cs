@@ -12,7 +12,7 @@ using StockMarket.Services;
 namespace StockMarket.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/alerts")]
     public class AlertController(IAlertServices alertServices) : ControllerBase
     {
         private readonly IAlertServices _alertServices = alertServices;

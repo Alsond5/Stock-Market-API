@@ -14,50 +14,50 @@ namespace StockMarket.Data.Repositories
 
         public async Task<IEnumerable<Models.Transaction>> GetAllTransactionsAsync()
         {
-            return await _context.Transactions.ToListAsync();
+            return await _context.Transactions.Include(t => t.User).ThenInclude(u => u!.Balance).Include(t => t.Stock).ToListAsync();
         }
 
         public async Task<Models.Transaction?> GetTransactionByIdAsync(int transactionId)
         {
-            return await _context.Transactions.FirstOrDefaultAsync(transaction => transaction.TransactionId == transactionId);
+            return await _context.Transactions.Include(t => t.User).ThenInclude(u => u!.Balance).Include(t => t.Stock).FirstOrDefaultAsync(transaction => transaction.TransactionId == transactionId);
         }
 
         public async Task<IEnumerable<Models.Transaction>> GetTransactionsByUserIdAsync(int userId)
         {
-            return await _context.Transactions.Where(transaction => transaction.UserId == userId).ToListAsync();
+            return await _context.Transactions.Include(t => t.User).ThenInclude(u => u!.Balance).Include(t => t.Stock).Where(transaction => transaction.UserId == userId).ToListAsync();
         }
 
         public async Task<IEnumerable<Models.Transaction>> GetTransactionsByStockIdAsync(int stockId)
         {
-            return await _context.Transactions.Where(transaction => transaction.StockId == stockId).ToListAsync();
+            return await _context.Transactions.Include(t => t.User).ThenInclude(u => u!.Balance).Include(t => t.Stock).Where(transaction => transaction.StockId == stockId).ToListAsync();
         }
 
         public async Task<IEnumerable<Models.Transaction>> GetTransactionsByPortfolioIdAsync(int portfolioId)
         {
             var portfolio = await _context.Portfolios.FirstOrDefaultAsync(portfolio => portfolio.PortfolioId == portfolioId);
-            if (portfolio == null) return new List<Models.Transaction>();
+            if (portfolio == null) return [];
 
-            return await _context.Transactions.Where(transaction => transaction.UserId == portfolio.UserId).ToListAsync();
+            return await _context.Transactions.Include(t => t.User).ThenInclude(u => u!.Balance).Include(t => t.Stock).Where(transaction => transaction.UserId == portfolio.UserId).ToListAsync();
         }
 
         public async Task<IEnumerable<Models.Transaction>> GetTransactionsByUserIdAndStockIdAsync(int userId, int stockId)
         {
-            return await _context.Transactions.Where(transaction => transaction.UserId == userId && transaction.StockId == stockId).ToListAsync();
+            return await _context.Transactions.Include(t => t.User).ThenInclude(u => u!.Balance).Include(t => t.Stock).Where(transaction => transaction.UserId == userId && transaction.StockId == stockId).ToListAsync();
         }
 
         public async Task<IEnumerable<Models.Transaction>> GetTransactionsByDateRangeForStockIdAsync(DateTime startDate, DateTime endDate, int stockId)
         {
-            return await _context.Transactions.Where(transaction => transaction.TransactionDate >= startDate && transaction.TransactionDate <= endDate && transaction.StockId == stockId).ToListAsync();
+            return await _context.Transactions.Include(t => t.User).ThenInclude(u => u!.Balance).Include(t => t.Stock).Where(transaction => transaction.TransactionDate >= startDate && transaction.TransactionDate <= endDate && transaction.StockId == stockId).ToListAsync();
         }
 
         public async Task<IEnumerable<Models.Transaction>> GetTransactionsByDateRangeAsync(DateTime startDate, DateTime endDate, int userId)
         {
-            return await _context.Transactions.Where(transaction => transaction.TransactionDate >= startDate && transaction.TransactionDate <= endDate && transaction.UserId == userId).Include(s => s.Stock).ToListAsync();
+            return await _context.Transactions.Include(t => t.User).ThenInclude(u => u!.Balance).Include(t => t.Stock).Where(transaction => transaction.TransactionDate >= startDate && transaction.TransactionDate <= endDate && transaction.UserId == userId).Include(s => s.Stock).ToListAsync();
         }
 
         public async Task<IEnumerable<Models.Transaction>> GetTransactionsByDateRangeAndStockAsync(DateTime startDate, DateTime endDate, int stockId, int userId)
         {
-            return await _context.Transactions.Where(transaction => transaction.TransactionDate >= startDate && transaction.TransactionDate <= endDate && transaction.StockId == stockId && transaction.UserId == userId).ToListAsync();
+            return await _context.Transactions.Include(t => t.User).ThenInclude(u => u!.Balance).Include(t => t.Stock).Where(transaction => transaction.TransactionDate >= startDate && transaction.TransactionDate <= endDate && transaction.StockId == stockId && transaction.UserId == userId).ToListAsync();
         }
 
         public async Task<Models.Transaction?> AddTransactionAsync(Models.Transaction transaction)

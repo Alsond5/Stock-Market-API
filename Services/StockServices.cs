@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using StockMarket.Data.Repositories;
+using StockMarket.Dtos.Stock;
 using StockMarket.Models;
 
 namespace StockMarket.Services
@@ -52,10 +53,21 @@ namespace StockMarket.Services
             return stock;
         }
 
-        public async Task<Stock?> ActivateAllStocksAsync() {
+        public async Task<IEnumerable<Stock>> ActivateAllStocksAsync() {
             var stock = await _stockRepository.ActivateAllStocksAsync();
 
             return stock;
+        }
+
+        public async Task<Stock?> UpdateStockQuantityAsync(int stockId, UpdateStockQuantityRequestDTO request) {
+            var stock = await _stockRepository.GetStockByIdAsync(stockId);
+            if (stock == null) return null;
+
+            stock.Quantity = request.Quantity;
+
+            var updatedStock = await _stockRepository.UpdateStockAsync(stockId, stock);
+
+            return updatedStock;
         }
     }
 }

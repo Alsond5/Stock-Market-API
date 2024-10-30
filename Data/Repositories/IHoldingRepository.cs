@@ -10,6 +10,7 @@ namespace StockMarket.Data.Repositories
     {
         Task<IEnumerable<Holding>> GetAllHoldingsAsync();
         Task<Holding?> GetHoldingByIdAsync(int holdingId);
+        Task<Holding?> GetHoldingByIdAsync(int userId, int holdingId);
         Task<IEnumerable<Holding>> GetHoldingByPortfolioIdAsync(int portfolioId);
         Task<Holding?> GetHoldingByPortfolioIdAndStockIdAsync(int portfolioId, int stockId);
         Task<Holding?> CreateHoldingAsync(Holding holding);

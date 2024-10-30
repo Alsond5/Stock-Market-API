@@ -78,7 +78,7 @@ namespace StockMarket.Data.Repositories
             return stock;
         }
 
-        public async Task<Stock?> ActivateAllStocksAsync()
+        public async Task<IEnumerable<Stock>> ActivateAllStocksAsync()
         {
             var stocks = _context.Stocks;
 
@@ -89,7 +89,7 @@ namespace StockMarket.Data.Repositories
 
             await _context.SaveChangesAsync();
 
-            return null;
+            return stocks;
         }
 
         public async Task<Stock?> UpdateStockAsync(int stockId, Stock stock)

@@ -13,22 +13,27 @@ namespace StockMarket.Data.Repositories
 
         public async Task<IEnumerable<Holding>> GetAllHoldingsAsync()
         {
-            return await _context.Holdings.ToListAsync();
+            return await _context.Holdings.Include(h => h.Stock).ToListAsync();
         }
 
         public async Task<Holding?> GetHoldingByIdAsync(int holdingId)
         {
-            return await _context.Holdings.FindAsync(holdingId);
+            return await _context.Holdings.Include(h => h.Stock).FirstOrDefaultAsync(holding => holding.Id == holdingId);
+        }
+
+        public async Task<Holding?> GetHoldingByIdAsync(int userId, int holdingId)
+        {
+            return await _context.Holdings.Include(h => h.Stock).FirstOrDefaultAsync(holding => holding.Id == holdingId && (holding.Portfolio != null) && holding.Portfolio.UserId == userId);
         }
 
         public async Task<IEnumerable<Holding>> GetHoldingByPortfolioIdAsync(int portfolioId)
         {
-            return await _context.Holdings.Where(holding => holding.PortfolioId == portfolioId).ToListAsync();
+            return await _context.Holdings.Include(h => h.Stock).Where(holding => holding.PortfolioId == portfolioId).ToListAsync();
         }
 
         public async Task<Holding?> GetHoldingByPortfolioIdAndStockIdAsync(int portfolioId, int stockId)
         {
-            return await _context.Holdings.FirstOrDefaultAsync(holding => holding.PortfolioId == portfolioId && holding.StockId == stockId);
+            return await _context.Holdings.Include(h => h.Stock).FirstOrDefaultAsync(holding => holding.PortfolioId == portfolioId && holding.StockId == stockId);
         }
 
         public async Task<Holding?> CreateHoldingAsync(Holding holding)

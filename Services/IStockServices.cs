@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using StockMarket.Dtos.Stock;
 using StockMarket.Models;
 
 namespace StockMarket.Services
@@ -13,6 +14,7 @@ namespace StockMarket.Services
         Task<Stock?> DeactivateStockAsync(int stockId);
         Task<IEnumerable<Stock>> DeactivateAllStocksAsync();
         Task<Stock?> ActivateStockAsync(int stockId);
-        Task<Stock?> ActivateAllStocksAsync();
+        Task<IEnumerable<Stock>> ActivateAllStocksAsync();
+        Task<Stock?> UpdateStockQuantityAsync(int stockId, UpdateStockQuantityRequestDTO request);
     }
 }

@@ -28,41 +28,45 @@ namespace StockMarket.Controllers
             return Ok(users);
         }
 
-        [HttpGet("user/{id}")]
+        [HttpGet("users/{id}")]
         [RoleAuthorize(2)]
         public async Task<IActionResult> GetUserById(int id) {
             var user = await _userServices.GetUserDetailsByUserIdAsync(id);
-
             if (user == null) return NotFound("404");
 
             return Ok(user);
         }
 
-        [HttpPut("user/{id}")]
+        [HttpPut("users/{id}")]
         [RoleAuthorize(2)]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserRequestDTO update) {
             var user = await _userServices.AdminUpdateUserAsync(id, update);
-
             if (user == null) return NotFound("404");
 
             return Ok(user);
         }
 
-        [HttpPost("user/create")]
+        [HttpPost("users/create")]
         [RoleAuthorize(2)]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserRequestDTO user) {
-            var createdUser = await _userServices.CreateUserAsync(user, User);
-
+            var createdUser = await _userServices.CreateUserAsync(user);
             if (createdUser == null) return BadRequest("400");
 
             return Ok(createdUser);
+        }
+
+        [HttpGet("system/commission")]
+        [RoleAuthorize(2)]
+        public async Task<IActionResult> GetCommission() {
+            var commission = await _systemServices.GetConfigValueAsync("commission");
+
+            return Ok(commission ?? "0");
         }
 
         [HttpPut("system/commission")]
         [RoleAuthorize(2)]
         public async Task<IActionResult> UpdateCommission([FromBody] UpdateCommissionRequestDTO commission) {
             var updatedCommission = await _systemServices.SetConfigValueAsync("commission", commission.Commission.ToString());
-
             if (updatedCommission == false) return BadRequest("400");
 
             return Ok(updatedCommission);

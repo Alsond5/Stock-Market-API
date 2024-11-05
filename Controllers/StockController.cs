@@ -17,17 +17,15 @@ namespace StockMarket.Controllers
         private readonly IStockServices _stockServices = stockServices;
 
         [HttpGet("all")]
-        [Authorize]
         public async Task<IActionResult> GetAllStocks() {
             var stocks = await _stockServices.GetAllStocksAsync();
 
             return Ok(stocks);
         }
 
-        [HttpGet("{id}")]
-        [Authorize]
-        public async Task<IActionResult> GetStockById(int id) {
-            var stock = await _stockServices.GetStockByIdAsync(id);
+        [HttpGet("{stockSymbol}")]
+        public async Task<IActionResult> GetStockById(string stockSymbol) {
+            var stock = await _stockServices.GetStockByStockSymbolAsync(stockSymbol);
             if (stock == null) return NotFound("404");
 
             return Ok(stock);

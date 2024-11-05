@@ -8,7 +8,7 @@ namespace StockMarket.Services
 {
     public interface IAuthServices
     {
-        Task<LoginResponseDTO> LoginAsync(LoginRequestDTO loginRequest);
+        Task<LoginResponseDTO?> LoginAsync(LoginRequestDTO loginRequest);
         Task<UserDTO?> RegisterAsync(CreateUserRequestDTO createUser);
         Task<string> RefreshTokenAsync(string token);
     }

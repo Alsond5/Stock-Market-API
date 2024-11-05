@@ -7,8 +7,8 @@ namespace StockMarket.Dtos.User
 {
     public class LoginResponseDTO
     {
-        public string? Token { get; set; }
-        public string? RefreshToken { get; set; }
-        public DateTime Expires { get; set; }
+        public required string Token { get; set; }
+        public required string TokenType { get; set; }
+        public DateTime Expiration { get; set; }
     }
 }

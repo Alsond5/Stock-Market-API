@@ -45,7 +45,11 @@ namespace StockMarket.Services
                 Email = user.Email,
                 Balance = user.Balance.Amount,
                 CreatedAt = user.CreatedAt,
-                RoleId = user.RoleId
+                RoleId = user.RoleId,
+                RoleName = user.Role!.RoleName,
+                PortfolioId = user.Portfolio!.PortfolioId,
+                TotalStocks = user.Portfolio.TotalStocks,
+                TotalStockQuantity = user.Portfolio.TotalStockQuantity
             });
         }
 
@@ -73,7 +77,11 @@ namespace StockMarket.Services
                 Email = createdUser.Email,
                 CreatedAt = createdUser.CreatedAt,
                 Balance = createdUser.Balance.Amount,
-                RoleId = createdUser.RoleId
+                RoleId = createdUser.RoleId,
+                RoleName = createdUser.Role!.RoleName,
+                PortfolioId = createdUser.Portfolio!.PortfolioId,
+                TotalStocks = createdUser.Portfolio.TotalStocks,
+                TotalStockQuantity = createdUser.Portfolio.TotalStockQuantity
             };
         }
 
@@ -88,7 +96,11 @@ namespace StockMarket.Services
                 Email = user.Email,
                 CreatedAt = user.CreatedAt,
                 Balance = user.Balance.Amount,
-                RoleId = user.RoleId
+                RoleId = user.RoleId,
+                RoleName = user.Role!.RoleName,
+                PortfolioId = user.Portfolio!.PortfolioId,
+                TotalStocks = user.Portfolio.TotalStocks,
+                TotalStockQuantity = user.Portfolio.TotalStockQuantity
             };
         }
 
@@ -124,7 +136,11 @@ namespace StockMarket.Services
                 Email = user.Email,
                 CreatedAt = user.CreatedAt,
                 Balance = user.Balance.Amount,
-                RoleId = user.RoleId
+                RoleId = user.RoleId,
+                RoleName = user.Role!.RoleName,
+                PortfolioId = user.Portfolio!.PortfolioId,
+                TotalStocks = user.Portfolio.TotalStocks,
+                TotalStockQuantity = user.Portfolio.TotalStockQuantity
             };
         }
 
@@ -193,7 +209,11 @@ namespace StockMarket.Services
                 Email = updatedUser.Email,
                 CreatedAt = updatedUser.CreatedAt,
                 Balance = updatedUser.Balance.Amount,
-                RoleId = updatedUser.RoleId
+                RoleId = updatedUser.RoleId,
+                RoleName = updatedUser.Role!.RoleName,
+                PortfolioId = updatedUser.Portfolio!.PortfolioId,
+                TotalStocks = updatedUser.Portfolio.TotalStocks,
+                TotalStockQuantity = updatedUser.Portfolio.TotalStockQuantity
             };
         }
 
@@ -246,7 +266,11 @@ namespace StockMarket.Services
                 Email = updatedUser.Email,
                 CreatedAt = updatedUser.CreatedAt,
                 Balance = updatedUser.Balance.Amount,
-                RoleId = updatedUser.RoleId
+                RoleId = updatedUser.RoleId,
+                RoleName = updatedUser.Role!.RoleName,
+                PortfolioId = updatedUser.Portfolio!.PortfolioId,
+                TotalStocks = updatedUser.Portfolio.TotalStocks,
+                TotalStockQuantity = updatedUser.Portfolio.TotalStockQuantity
             };
         }
     }

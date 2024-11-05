@@ -12,12 +12,12 @@ namespace StockMarket.Services
         Task<IEnumerable<TransactionDTO>> GetAllTransactionsAsync();
         Task<TransactionDTO?> GetTransactionByIdAsync(int transactionId);
         Task<IEnumerable<TransactionDTO>> GetTransactionsByUserIdAsync(int userId);
-        Task<IEnumerable<TransactionDTO>> GetTransactionsByStockIdAsync(int stockId);
+        Task<IEnumerable<TransactionDTO>> GetTransactionsByStockSymbolAsync(string stockSymbol);
         Task<IEnumerable<TransactionDTO>> GetTransactionsByPortfolioIdAsync(int portfolioId);
-        Task<IEnumerable<TransactionDTO>> GetTransactionsByUserIdAndStockIdAsync(int userId, int stockId);
-        Task<IEnumerable<TransactionDTO>> GetTransactionsByDateRangeForStockIdAsync(DateTime startDate, DateTime endDate, int stockId);
+        Task<IEnumerable<TransactionDTO>> GetTransactionsByUserIdAndStockSymbolAsync(int userId, string stockSymbol);
+        Task<IEnumerable<TransactionDTO>> GetTransactionsByDateRangeForStockSymbolAsync(DateTime startDate, DateTime endDate, string stockSymbol);
         Task<IEnumerable<TransactionDTO>> GetTransactionsByDateRangeAsync(DateTime startDate, DateTime endDate, int userId);
-        Task<IEnumerable<TransactionDTO>> GetTransactionsByDateRangeAndStockAsync(DateTime startDate, DateTime endDate, int stockId, int userId);
+        Task<IEnumerable<TransactionDTO>> GetTransactionsByDateRangeAndStockAsync(DateTime startDate, DateTime endDate, string stockSymbol, int userId);
         Task<TransactionDTO?> CreateTransactionAsync(Models.Transaction transaction);
         Task<TransactionDTO?> UpdateTransactionAsync(Models.Transaction transaction);
     }

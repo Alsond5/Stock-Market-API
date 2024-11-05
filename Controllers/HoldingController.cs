@@ -61,6 +61,7 @@ namespace StockMarket.Controllers
         [HttpPut("buy")]
         [Authorize]
         public async Task<IActionResult> BuyStock([FromBody] BuySellRequestDTO buyRequest) {
+            Console.WriteLine($"BuyStock: {buyRequest.StockId}, {buyRequest.Quantity}");
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return BadRequest("400");
 

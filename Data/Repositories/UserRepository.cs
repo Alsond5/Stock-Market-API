@@ -16,27 +16,27 @@ namespace StockMarket.Data.Repositories
         }
 
         public async Task<List<User>> GetAllUsersAsync() {
-            return await _stockMarketDBContext.Users.Include(b => b.Balance).ToListAsync();
+            return await _stockMarketDBContext.Users.Include(b => b.Balance).Include(r => r.Role).Include(p => p.Portfolio).ToListAsync();
         }
 
         public async Task<User?> GetUserByIdAsync(int id) {
-            return await _stockMarketDBContext.Users.Include(b => b.Balance).FirstOrDefaultAsync(u => u.UserId == id);
+            return await _stockMarketDBContext.Users.Include(b => b.Balance).Include(r => r.Role).Include(p => p.Portfolio).FirstOrDefaultAsync(u => u.UserId == id);
         }
 
         public async Task<User?> GetUserByUsernameAsync(string username) {
-            return await _stockMarketDBContext.Users.Include(b => b.Balance).FirstOrDefaultAsync(u => u.Username == username);
+            return await _stockMarketDBContext.Users.Include(b => b.Balance).Include(r => r.Role).Include(p => p.Portfolio).FirstOrDefaultAsync(u => u.Username == username);
         }
 
         public async Task<User?> GetUserByEmailAsync(string email) {
-            return await _stockMarketDBContext.Users.Include(b => b.Balance).FirstOrDefaultAsync(u => u.Email == email);
+            return await _stockMarketDBContext.Users.Include(b => b.Balance).Include(r => r.Role).Include(p => p.Portfolio).FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<User?> GetUserByUsernameOrEmailAsync(string usernameOrEmail) {
-            return await _stockMarketDBContext.Users.Include(b => b.Balance).FirstOrDefaultAsync(u => u.Username == usernameOrEmail || u.Email == usernameOrEmail);
+            return await _stockMarketDBContext.Users.Include(b => b.Balance).Include(r => r.Role).Include(p => p.Portfolio).FirstOrDefaultAsync(u => u.Username == usernameOrEmail || u.Email == usernameOrEmail);
         }
 
         public async Task<User?> GetUserIfExistingAsync(string username, string email) {
-            return await _stockMarketDBContext.Users.Include(b => b.Balance).FirstOrDefaultAsync(u => u.Username == username || u.Email == email);
+            return await _stockMarketDBContext.Users.Include(b => b.Balance).Include(r => r.Role).Include(p => p.Portfolio).FirstOrDefaultAsync(u => u.Username == username || u.Email == email);
         }
 
         public async Task<User?> AddUserAsync(User user) {

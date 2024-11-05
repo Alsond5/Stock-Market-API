@@ -23,6 +23,7 @@ namespace StockMarket.Controllers
         public async Task<ActionResult<IEnumerable<Transaction>>> GetAllTransactionsAsync()
         {
             var transactions = await _transactionServices.GetAllTransactionsAsync();
+            if (transactions == null || !transactions.Any()) return NotFound();
 
             return Ok(transactions);
         }
@@ -47,27 +48,33 @@ namespace StockMarket.Controllers
             var userId = int.Parse(user.Value);
 
             var transactions = await _transactionServices.GetTransactionsByUserIdAsync(userId);
+            if (transactions == null || !transactions.Any()) return NotFound();
+
             return Ok(transactions);
         }
 
-        [HttpGet("@me/{stockId}")]
+        [HttpGet("@me/stock/{stockSymbol}")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByStockIdAsync(int stockId)
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByStockSymbolAsync(string stockSymbol)
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
             if (user == null) return Unauthorized();
 
             var userId = int.Parse(user.Value);
 
-            var transactions = await _transactionServices.GetTransactionsByUserIdAndStockIdAsync(userId, stockId);
+            var transactions = await _transactionServices.GetTransactionsByUserIdAndStockSymbolAsync(userId, stockSymbol);
+            if (transactions == null || !transactions.Any()) return NotFound();
+
             return Ok(transactions);
         }
 
-        [HttpGet("range")]
+        [HttpGet("range/{stockSymbol}")]
         [RoleAuthorize(2)]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByDateRangeForStockIdAsync([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromQuery] int stockId)
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByDateRangeForStockIdAsync([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, string stockSymbol)
         {
-            var transactions = await _transactionServices.GetTransactionsByDateRangeForStockIdAsync(startDate, endDate, stockId);
+            var transactions = await _transactionServices.GetTransactionsByDateRangeForStockSymbolAsync(startDate, endDate, stockSymbol);
+            if (transactions == null || !transactions.Any()) return NotFound();
+
             return Ok(transactions);
         }
 
@@ -81,19 +88,23 @@ namespace StockMarket.Controllers
             var userId = int.Parse(user.Value);
 
             var transactions = await _transactionServices.GetTransactionsByDateRangeAsync(startDate, endDate, userId);
+            if (transactions == null || !transactions.Any()) return NotFound();
+
             return Ok(transactions);
         }
 
-        [HttpGet("@me/range/{stockId}")]
+        [HttpGet("@me/range/{stockSymbol}")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByDateRangeAndStockAsync([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, int stockId)
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsByDateRangeAndStockAsync([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, string stockSymbol)
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
             if (user == null) return Unauthorized();
 
             var userId = int.Parse(user.Value);
 
-            var transactions = await _transactionServices.GetTransactionsByDateRangeAndStockAsync(startDate, endDate, stockId, userId);
+            var transactions = await _transactionServices.GetTransactionsByDateRangeAndStockAsync(startDate, endDate, stockSymbol, userId);
+            if (transactions == null || !transactions.Any()) return NotFound();
+
             return Ok(transactions);
         }
 
@@ -107,6 +118,7 @@ namespace StockMarket.Controllers
             var userId = int.Parse(user.Value);
 
             var transactions = await _transactionServices.GetTransactionsByDateRangeAsync(startDate, endDate, userId);
+            if (transactions == null || !transactions.Any()) return NotFound();
 
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Transactions");
@@ -127,7 +139,7 @@ namespace StockMarket.Controllers
             foreach (var transaction in transactions)
             {
                 worksheet.Cell(row, 1).Value = transaction.TransactionId;
-                worksheet.Cell(row, 2).Value = transaction.User.UserId;
+                worksheet.Cell(row, 2).Value = transaction.UserId;
                 worksheet.Cell(row, 3).Value = transaction.Stock!.StockId;
                 worksheet.Cell(row, 4).Value = transaction.Stock.StockSymbol;
                 worksheet.Cell(row, 5).Value = transaction.Stock.StockName;

@@ -31,6 +31,13 @@ namespace StockMarket.Services
             return stock;
         }
 
+        public async Task<Stock?> GetStockByStockSymbolAsync(string stockSymbol)
+        {
+            var stock = await _stockRepository.GetStockBySymbolAsync(stockSymbol);
+
+            return stock;
+        }
+
         public async Task<Stock?> DeactivateStockAsync(int stockId) {
             var stock = await _stockRepository.DeactivateStockAsync(stockId);
 

@@ -13,5 +13,9 @@ namespace StockMarket.Dtos.User
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public decimal Balance { get; set; }
         public int RoleId { get; set; }
+        public string RoleName { get; set; } = string.Empty;
+        public int PortfolioId { get; set; }
+        public int TotalStocks { get; set; }
+        public int TotalStockQuantity { get; set; }
     }
 }

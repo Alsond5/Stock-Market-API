@@ -15,6 +15,7 @@ namespace StockMarket.Services
         public async Task<IEnumerable<TransactionDTO>> GetAllTransactionsAsync()
         {
             var transactions = await _transactionRepository.GetAllTransactionsAsync();
+            if (transactions == null) return [];
 
             return transactions.Select(transaction => new TransactionDTO{
                 TransactionId = transaction.TransactionId,
@@ -23,14 +24,7 @@ namespace StockMarket.Services
                 PricePerUnit = transaction.PricePerUnit,
                 Commission = transaction.Commission,
                 TransactionDate = transaction.TransactionDate,
-                User = new Dtos.User.UserDTO{
-                    UserId = transaction.User!.UserId,
-                    Username = transaction.User!.Username,
-                    Email = transaction.User!.Email,
-                    Balance = transaction.User!.Balance.Amount,
-                    CreatedAt = transaction.User!.CreatedAt,
-                    RoleId = transaction.User!.RoleId,
-                },
+                UserId = transaction.UserId,
                 Stock = new Dtos.Stock.StockDTO{
                     StockId = transaction.Stock!.StockId,
                     StockSymbol = transaction.Stock!.StockSymbol,
@@ -52,14 +46,7 @@ namespace StockMarket.Services
                 PricePerUnit = transaction.PricePerUnit,
                 Commission = transaction.Commission,
                 TransactionDate = transaction.TransactionDate,
-                User = new Dtos.User.UserDTO{
-                    UserId = transaction.User!.UserId,
-                    Username = transaction.User!.Username,
-                    Email = transaction.User!.Email,
-                    Balance = transaction.User!.Balance.Amount,
-                    CreatedAt = transaction.User!.CreatedAt,
-                    RoleId = transaction.User!.RoleId,
-                },
+                UserId = transaction.UserId,
                 Stock = new Dtos.Stock.StockDTO{
                     StockId = transaction.Stock!.StockId,
                     StockSymbol = transaction.Stock!.StockSymbol,
@@ -73,6 +60,7 @@ namespace StockMarket.Services
         public async Task<IEnumerable<TransactionDTO>> GetTransactionsByUserIdAsync(int userId)
         {
             var transactions = await _transactionRepository.GetTransactionsByUserIdAsync(userId);
+            if (transactions == null) return [];
 
             return transactions.Select(transaction => new TransactionDTO{
                 TransactionId = transaction.TransactionId,
@@ -81,14 +69,7 @@ namespace StockMarket.Services
                 PricePerUnit = transaction.PricePerUnit,
                 Commission = transaction.Commission,
                 TransactionDate = transaction.TransactionDate,
-                User = new Dtos.User.UserDTO{
-                    UserId = transaction.User!.UserId,
-                    Username = transaction.User!.Username,
-                    Email = transaction.User!.Email,
-                    Balance = transaction.User!.Balance.Amount,
-                    CreatedAt = transaction.User!.CreatedAt,
-                    RoleId = transaction.User!.RoleId,
-                },
+                UserId = transaction.UserId,
                 Stock = new Dtos.Stock.StockDTO{
                     StockId = transaction.Stock!.StockId,
                     StockSymbol = transaction.Stock!.StockSymbol,
@@ -99,9 +80,10 @@ namespace StockMarket.Services
             });
         }
 
-        public async Task<IEnumerable<TransactionDTO>> GetTransactionsByStockIdAsync(int stockId)
+        public async Task<IEnumerable<TransactionDTO>> GetTransactionsByStockSymbolAsync(string stockSymbol)
         {
-            var transactions = await _transactionRepository.GetTransactionsByStockIdAsync(stockId);
+            var transactions = await _transactionRepository.GetTransactionsByStockSymbolAsync(stockSymbol);
+            if (transactions == null) return [];
 
             return transactions.Select(transaction => new TransactionDTO{
                 TransactionId = transaction.TransactionId,
@@ -110,14 +92,7 @@ namespace StockMarket.Services
                 PricePerUnit = transaction.PricePerUnit,
                 Commission = transaction.Commission,
                 TransactionDate = transaction.TransactionDate,
-                User = new Dtos.User.UserDTO{
-                    UserId = transaction.User!.UserId,
-                    Username = transaction.User!.Username,
-                    Email = transaction.User!.Email,
-                    Balance = transaction.User!.Balance.Amount,
-                    CreatedAt = transaction.User!.CreatedAt,
-                    RoleId = transaction.User!.RoleId,
-                },
+                UserId = transaction.UserId,
                 Stock = new Dtos.Stock.StockDTO{
                     StockId = transaction.Stock!.StockId,
                     StockSymbol = transaction.Stock!.StockSymbol,
@@ -131,6 +106,7 @@ namespace StockMarket.Services
         public async Task<IEnumerable<TransactionDTO>> GetTransactionsByPortfolioIdAsync(int portfolioId)
         {
             var transactions = await _transactionRepository.GetTransactionsByPortfolioIdAsync(portfolioId);
+            if (transactions == null) return [];
 
             return transactions.Select(transaction => new TransactionDTO{
                 TransactionId = transaction.TransactionId,
@@ -139,14 +115,7 @@ namespace StockMarket.Services
                 PricePerUnit = transaction.PricePerUnit,
                 Commission = transaction.Commission,
                 TransactionDate = transaction.TransactionDate,
-                User = new Dtos.User.UserDTO{
-                    UserId = transaction.User!.UserId,
-                    Username = transaction.User!.Username,
-                    Email = transaction.User!.Email,
-                    Balance = transaction.User!.Balance.Amount,
-                    CreatedAt = transaction.User!.CreatedAt,
-                    RoleId = transaction.User!.RoleId,
-                },
+                UserId = transaction.UserId,
                 Stock = new Dtos.Stock.StockDTO{
                     StockId = transaction.Stock!.StockId,
                     StockSymbol = transaction.Stock!.StockSymbol,
@@ -157,9 +126,14 @@ namespace StockMarket.Services
             });
         }
 
-        public async Task<IEnumerable<TransactionDTO>> GetTransactionsByUserIdAndStockIdAsync(int userId, int stockId)
+        public async Task<IEnumerable<TransactionDTO>> GetTransactionsByUserIdAndStockSymbolAsync(int userId, string stockSymbol)
         {
-            var transactions = await _transactionRepository.GetTransactionsByUserIdAndStockIdAsync(userId, stockId);
+            var transactions = await _transactionRepository.GetTransactionsByUserIdAndStockSymbolAsync(userId, stockSymbol);
+            foreach (var transaction in transactions)
+            {
+                Console.WriteLine(transaction);
+            }
+            if (transactions == null) return [];
 
             return transactions.Select(transaction => new TransactionDTO{
                 TransactionId = transaction.TransactionId,
@@ -168,14 +142,7 @@ namespace StockMarket.Services
                 PricePerUnit = transaction.PricePerUnit,
                 Commission = transaction.Commission,
                 TransactionDate = transaction.TransactionDate,
-                User = new Dtos.User.UserDTO{
-                    UserId = transaction.User!.UserId,
-                    Username = transaction.User!.Username,
-                    Email = transaction.User!.Email,
-                    Balance = transaction.User!.Balance.Amount,
-                    CreatedAt = transaction.User!.CreatedAt,
-                    RoleId = transaction.User!.RoleId,
-                },
+                UserId = transaction.UserId,
                 Stock = new Dtos.Stock.StockDTO{
                     StockId = transaction.Stock!.StockId,
                     StockSymbol = transaction.Stock!.StockSymbol,
@@ -186,9 +153,10 @@ namespace StockMarket.Services
             });
         }
 
-        public async Task<IEnumerable<TransactionDTO>> GetTransactionsByDateRangeForStockIdAsync(DateTime startDate, DateTime endDate, int stockId)
+        public async Task<IEnumerable<TransactionDTO>> GetTransactionsByDateRangeForStockSymbolAsync(DateTime startDate, DateTime endDate, string stockSymbol)
         {
-            var transactions = await _transactionRepository.GetTransactionsByDateRangeForStockIdAsync(startDate, endDate, stockId);
+            var transactions = await _transactionRepository.GetTransactionsByDateRangeForStockSymbolAsync(startDate, endDate, stockSymbol);
+            if (transactions == null) return [];
 
             return transactions.Select(transaction => new TransactionDTO{
                 TransactionId = transaction.TransactionId,
@@ -197,14 +165,7 @@ namespace StockMarket.Services
                 PricePerUnit = transaction.PricePerUnit,
                 Commission = transaction.Commission,
                 TransactionDate = transaction.TransactionDate,
-                User = new Dtos.User.UserDTO{
-                    UserId = transaction.User!.UserId,
-                    Username = transaction.User!.Username,
-                    Email = transaction.User!.Email,
-                    Balance = transaction.User!.Balance.Amount,
-                    CreatedAt = transaction.User!.CreatedAt,
-                    RoleId = transaction.User!.RoleId,
-                },
+                UserId = transaction.UserId,
                 Stock = new Dtos.Stock.StockDTO{
                     StockId = transaction.Stock!.StockId,
                     StockSymbol = transaction.Stock!.StockSymbol,
@@ -218,6 +179,7 @@ namespace StockMarket.Services
         public async Task<IEnumerable<TransactionDTO>> GetTransactionsByDateRangeAsync(DateTime startDate, DateTime endDate, int userId)
         {
             var transactions = await _transactionRepository.GetTransactionsByDateRangeAsync(startDate, endDate, userId);
+            if (transactions == null) return [];
 
             return transactions.Select(transaction => new TransactionDTO{
                 TransactionId = transaction.TransactionId,
@@ -226,14 +188,7 @@ namespace StockMarket.Services
                 PricePerUnit = transaction.PricePerUnit,
                 Commission = transaction.Commission,
                 TransactionDate = transaction.TransactionDate,
-                User = new Dtos.User.UserDTO{
-                    UserId = transaction.User!.UserId,
-                    Username = transaction.User!.Username,
-                    Email = transaction.User!.Email,
-                    Balance = transaction.User!.Balance.Amount,
-                    CreatedAt = transaction.User!.CreatedAt,
-                    RoleId = transaction.User!.RoleId,
-                },
+                UserId = transaction.UserId,
                 Stock = new Dtos.Stock.StockDTO{
                     StockId = transaction.Stock!.StockId,
                     StockSymbol = transaction.Stock!.StockSymbol,
@@ -244,9 +199,10 @@ namespace StockMarket.Services
             });
         }
 
-        public async Task<IEnumerable<TransactionDTO>> GetTransactionsByDateRangeAndStockAsync(DateTime startDate, DateTime endDate, int stockId, int userId)
+        public async Task<IEnumerable<TransactionDTO>> GetTransactionsByDateRangeAndStockAsync(DateTime startDate, DateTime endDate, string stockSymbol, int userId)
         {
-            var transactions = await _transactionRepository.GetTransactionsByDateRangeAndStockAsync(startDate, endDate, stockId, userId);
+            var transactions = await _transactionRepository.GetTransactionsByDateRangeAndStockAsync(startDate, endDate, stockSymbol, userId);
+            if (transactions == null) return [];
 
             return transactions.Select(transaction => new TransactionDTO{
                 TransactionId = transaction.TransactionId,
@@ -255,14 +211,7 @@ namespace StockMarket.Services
                 PricePerUnit = transaction.PricePerUnit,
                 Commission = transaction.Commission,
                 TransactionDate = transaction.TransactionDate,
-                User = new Dtos.User.UserDTO{
-                    UserId = transaction.User!.UserId,
-                    Username = transaction.User!.Username,
-                    Email = transaction.User!.Email,
-                    Balance = transaction.User!.Balance.Amount,
-                    CreatedAt = transaction.User!.CreatedAt,
-                    RoleId = transaction.User!.RoleId,
-                },
+                UserId = transaction.UserId,
                 Stock = new Dtos.Stock.StockDTO{
                     StockId = transaction.Stock!.StockId,
                     StockSymbol = transaction.Stock!.StockSymbol,
@@ -284,14 +233,7 @@ namespace StockMarket.Services
                 PricePerUnit = newTransaction.PricePerUnit,
                 Commission = newTransaction.Commission,
                 TransactionDate = newTransaction.TransactionDate,
-                User = new Dtos.User.UserDTO{
-                    UserId = transaction.User!.UserId,
-                    Username = transaction.User!.Username,
-                    Email = transaction.User!.Email,
-                    Balance = transaction.User!.Balance.Amount,
-                    CreatedAt = transaction.User!.CreatedAt,
-                    RoleId = transaction.User!.RoleId,
-                },
+                UserId = transaction.UserId,
                 Stock = new Dtos.Stock.StockDTO{
                     StockId = transaction.Stock!.StockId,
                     StockSymbol = transaction.Stock!.StockSymbol,
@@ -313,14 +255,7 @@ namespace StockMarket.Services
                 PricePerUnit = updatedTransaction.PricePerUnit,
                 Commission = updatedTransaction.Commission,
                 TransactionDate = updatedTransaction.TransactionDate,
-                User = new Dtos.User.UserDTO{
-                    UserId = transaction.User!.UserId,
-                    Username = transaction.User!.Username,
-                    Email = transaction.User!.Email,
-                    Balance = transaction.User!.Balance.Amount,
-                    CreatedAt = transaction.User!.CreatedAt,
-                    RoleId = transaction.User!.RoleId,
-                },
+                UserId = transaction.UserId,
                 Stock = new Dtos.Stock.StockDTO{
                     StockId = transaction.Stock!.StockId,
                     StockSymbol = transaction.Stock!.StockSymbol,

@@ -16,7 +16,7 @@ namespace StockMarket.Dtos.Transaction
         public decimal Commission { get; set; }
         public DateTime TransactionDate { get; set; } = DateTime.Now;
 
-        public UserDTO User { get; set; } = new UserDTO();
+        public int UserId { get; set; }
         public StockDTO Stock { get; set; } = new StockDTO();
     }
 }

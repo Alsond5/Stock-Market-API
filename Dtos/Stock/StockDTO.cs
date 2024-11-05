@@ -12,5 +12,7 @@ namespace StockMarket.Dtos.Stock
         public string StockName { get; set; } = string.Empty;
         public int StockQuantity { get; set; }
         public decimal Price { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime LastUpdated { get; set; }
     }
 }

@@ -76,7 +76,8 @@ namespace StockMarket.Services
             
             return new LoginResponseDTO {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
-                Expires = token.ValidTo
+                TokenType = "Bearer",
+                Expiration = token.ValidTo
             };
         }
 

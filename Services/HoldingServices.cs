@@ -138,6 +138,7 @@ namespace StockMarket.Services
                 };
 
                 await _holdingRepository.CreateHoldingAsync(holding);
+                portfolio.TotalStocks += 1;
             }
             else
             {
@@ -149,7 +150,6 @@ namespace StockMarket.Services
             user.Balance.Amount -= requiredAmount;
             await _userRepository.UpdateUserAsync(user);
 
-            portfolio.TotalStocks += 1;
             portfolio.TotalStockQuantity += buyRequest.Quantity;
             await _portfolioRepository.UpdatePortfolioAsync(portfolio);
 
@@ -221,8 +221,8 @@ namespace StockMarket.Services
 
             if (holding.Quantity == sellRequest.Quantity)
             {
-                portfolio.TotalStocks -= 1;
                 await _holdingRepository.DeleteHoldingAsync(holding.Id);
+                portfolio.TotalStocks -= 1;
             } else
             {
                 holding.Quantity -= sellRequest.Quantity;

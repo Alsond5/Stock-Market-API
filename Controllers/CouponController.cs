@@ -37,7 +37,7 @@ namespace StockMarket.Controllers
             return Ok(createdCoupon);
         }
 
-        [HttpPut("reedem")]
+        [HttpPut("redeem")]
         [Authorize]
         public async Task<IActionResult> ReedemCoupon([FromBody] ReedemCouponRequestDTO reedemCoupon)
         {

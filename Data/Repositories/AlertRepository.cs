@@ -10,6 +10,11 @@ namespace StockMarket.Data.Repositories
     {
         private readonly StockMarketDBContext _context = context;
 
+        public async Task<List<Models.Alert>> GetAlerts()
+        {
+            return await _context.Alerts.Include(s => s.Stock).ToListAsync();
+        }
+
         public async Task<List<Models.Alert>> GetAlerts(int userId)
         {
             return await _context.Alerts.Where(alert => alert.UserId == userId).Include(s => s.Stock).ToListAsync();

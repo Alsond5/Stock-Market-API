@@ -159,7 +159,10 @@ namespace StockMarket.Services
 
             return new BalanceDTO {
                 BalanceId = balance.BalanceId,
-                Amount = balance.Amount
+                Amount = balance.Amount,
+                UserId = balance.UserId,
+                Username = balance.User!.Username,
+                Email = balance.User!.Email
             };
         }
 

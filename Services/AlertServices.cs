@@ -10,6 +10,21 @@ namespace StockMarket.Services
     {
         private readonly IAlertRepository _alertRepository = alertRepository;
 
+        public async Task<List<Dtos.Alert.AlertDTO>> GetAlerts()
+        {
+            var alerts = await _alertRepository.GetAlerts();
+
+            return alerts.Select(alert => new Dtos.Alert.AlertDTO
+            {
+                Id = alert.AlertId,
+                StockId = alert.StockId,
+                LowerLimit = alert.LowerLimit,
+                UpperLimit = alert.UpperLimit,
+                StockSymbol = alert.Stock?.StockSymbol ?? string.Empty,
+                StockName = alert.Stock?.StockName ?? string.Empty
+            }).ToList();
+        }
+
         public async Task<List<Dtos.Alert.AlertDTO>> GetAlerts(int userId)
         {
             var alerts = await _alertRepository.GetAlerts(userId);

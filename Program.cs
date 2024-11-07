@@ -49,8 +49,9 @@ builder.Services.AddScoped<IHoldingServices, HoldingServices>();
 builder.Services.AddScoped<ISystemServices, SystemServices>();
 builder.Services.AddScoped<ITransactionServices, TransactionServices>();
 builder.Services.AddScoped<IAlertServices, AlertServices>();
-builder.Services.AddScoped<IHashServices, HashServices>();
 builder.Services.AddScoped<IAuthServices, AuthServices>();
+builder.Services.AddScoped<IBalanceServices, BalanceServices>();
+builder.Services.AddScoped<IHashServices, HashServices>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StockMarket.Attributes;
 using StockMarket.Data.Repositories;
 using StockMarket.Dtos.Holding;
 using StockMarket.Services;
@@ -17,6 +18,15 @@ namespace StockMarket.Controllers
     {
         private readonly IHoldingServices _holdingServices = holdingServices;
         private readonly IPortfolioRepository _portfolioRepository = portfolioRepository;
+
+        [HttpGet("all")]
+        [RoleAuthorize(2)]
+        public async Task<IActionResult> GetAllHoldings() {
+            var holdings = await _holdingServices.GetAllHoldingsAsync();
+            if (holdings == null) return NotFound("404");
+
+            return Ok(holdings);
+        }
 
         [HttpGet("@me/all")]
         [Authorize]

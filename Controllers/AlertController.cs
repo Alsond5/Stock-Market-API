@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StockMarket.Attributes;
 using StockMarket.Data.Repositories;
 using StockMarket.Dtos.Alert;
 using StockMarket.Services;
@@ -16,6 +17,15 @@ namespace StockMarket.Controllers
     public class AlertController(IAlertServices alertServices) : ControllerBase
     {
         private readonly IAlertServices _alertServices = alertServices;
+
+        [HttpGet("all")]
+        [RoleAuthorize(2)]
+        public async Task<IActionResult> GetAllAlerts()
+        {
+            var alerts = await _alertServices.GetAlerts();
+
+            return Ok(alerts);
+        }
 
         [HttpGet("@me/alerts")]
         [Authorize]

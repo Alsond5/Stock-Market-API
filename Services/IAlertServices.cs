@@ -7,6 +7,7 @@ namespace StockMarket.Services
 {
     public interface IAlertServices
     {
+        Task<List<Dtos.Alert.AlertDTO>> GetAlerts();
         Task<List<Dtos.Alert.AlertDTO>> GetAlerts(int userId);
         Task<List<Dtos.Alert.AlertDTO>> GetAlerts(int userId, int stockId);
         Task<Dtos.Alert.AlertDTO?> GetAlert(int userId, int alertId);

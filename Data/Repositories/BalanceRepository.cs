@@ -16,15 +16,15 @@ namespace StockMarket.Data.Repositories
         }
 
         public async Task<List<Balance>> GetAllBalancesAsync() {
-            return await _stockMarketDBContext.Balances.ToListAsync();
+            return await _stockMarketDBContext.Balances.Include(u => u.User).ToListAsync();
         }
 
         public async Task<Balance?> GetBalanceByIdAsync(int id) {
-            return await _stockMarketDBContext.Balances.FindAsync(id);
+            return await _stockMarketDBContext.Balances.Include(u => u.User).FirstOrDefaultAsync(b => b.BalanceId == id);
         }
 
         public async Task<Balance?> GetBalanceByUserIdAsync(int userId) {
-            return await _stockMarketDBContext.Balances.FirstOrDefaultAsync(b => b.UserId == userId);
+            return await _stockMarketDBContext.Balances.Include(u => u.User).FirstOrDefaultAsync(b => b.UserId == userId);
         }
 
         public async Task<Balance?> AddBalanceAsync(Balance balance) {

@@ -25,6 +25,11 @@ namespace StockMarket.Data.Repositories
             return await _context.Alerts.Where(alert => alert.UserId == userId && alert.StockId == stockId).Include(s => s.Stock).ToListAsync();
         }
 
+        public async Task<Models.Alert?> GetAlert(int alertId)
+        {
+            return await _context.Alerts.Include(s => s.Stock).FirstOrDefaultAsync(alert => alert.AlertId == alertId);
+        }
+
         public async Task<Models.Alert?> GetAlert(int userId, int alertId)
         {
             return await _context.Alerts.Include(s => s.Stock).FirstOrDefaultAsync(alert => alert.UserId == userId && alert.AlertId == alertId);
@@ -41,6 +46,19 @@ namespace StockMarket.Data.Repositories
             };
 
             await _context.Alerts.AddAsync(alert);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAlert(int alertId, decimal? lowerPrice, decimal? upperPrice)
+        {
+            var alert = await _context.Alerts.FirstOrDefaultAsync(alert => alert.AlertId == alertId);
+
+            if (alert == null) return;
+
+            alert.LowerLimit = lowerPrice ?? 0;
+            alert.UpperLimit = upperPrice ?? 0;
+
+            _context.Alerts.Update(alert);
             await _context.SaveChangesAsync();
         }
 

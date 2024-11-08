@@ -55,6 +55,22 @@ namespace StockMarket.Services
             }).ToList();
         }
 
+        public async Task<Dtos.Alert.AlertDTO?> GetAlert(int alertId)
+        {
+            var alert = await _alertRepository.GetAlert(alertId);
+            if (alert == null) return null;
+
+            return new Dtos.Alert.AlertDTO
+            {
+                Id = alert.AlertId,
+                StockId = alert.StockId,
+                LowerLimit = alert.LowerLimit,
+                UpperLimit = alert.UpperLimit,
+                StockSymbol = alert.Stock?.StockSymbol ?? string.Empty,
+                StockName = alert.Stock?.StockName ?? string.Empty
+            };
+        }
+
         public async Task<Dtos.Alert.AlertDTO?> GetAlert(int userId, int alertId)
         {
             var alert = await _alertRepository.GetAlert(userId, alertId);
@@ -75,6 +91,11 @@ namespace StockMarket.Services
         public async Task CreateAlert(int userId, Dtos.Alert.CreateAlertRequestDTO alert)
         {
             await _alertRepository.CreateAlert(userId, alert.StockId, alert.LowerLimit, alert.UpperLimit);
+        }
+
+        public async Task UpdateAlert(Dtos.Alert.UpdateAlertRequestDTO alert)
+        {
+            await _alertRepository.UpdateAlert(alert.Id, alert.LowerLimit, alert.UpperLimit);
         }
 
         public async Task UpdateAlert(int userId, Dtos.Alert.UpdateAlertRequestDTO alert)

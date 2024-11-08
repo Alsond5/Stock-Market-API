@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StockMarket.Attributes;
 using StockMarket.Dtos.Coupon;
+using StockMarket.Models;
 using StockMarket.Services;
 
 namespace StockMarket.Controllers
@@ -26,6 +27,28 @@ namespace StockMarket.Controllers
             return Ok(coupons);
         }
 
+        [HttpGet("{couponId}")]
+        [RoleAuthorize(2)]
+        public async Task<IActionResult> GetCoupon(int couponId)
+        {
+            var coupon = await _couponServices.GetCouponByIdAsync(couponId);
+            if (coupon == null) return NotFound("404");
+
+            return Ok(coupon);
+        }
+
+        [HttpPut("{couponId}")]
+        [RoleAuthorize(2)]
+        public async Task<IActionResult> UpdateCoupon(int couponId, [FromBody] UpdateCouponRequestDTO coupon)
+        {
+            Console.WriteLine(couponId);
+            Console.WriteLine(coupon.Amount);
+            var updatedCoupon = await _couponServices.UpdateCouponAsync(couponId, coupon);
+            if (updatedCoupon == null) return NotFound("404");
+
+            return Ok(updatedCoupon);
+        }
+
         [HttpPost("create")]
         [RoleAuthorize(2)]
         public async Task<IActionResult> CreateCoupon([FromBody] CreateCouponRequestDTO coupon)
@@ -35,6 +58,16 @@ namespace StockMarket.Controllers
             if (createdCoupon == null) return BadRequest("400");
 
             return Ok(createdCoupon);
+        }
+
+        [HttpDelete("{couponId}")]
+        [RoleAuthorize(2)]
+        public async Task<IActionResult> DeleteCoupon(int couponId)
+        {
+            var isDeleted = await _couponServices.DeleteCouponAsync(couponId);
+            if (isDeleted == false) return NotFound("404");
+
+            return Ok(isDeleted);
         }
 
         [HttpPut("redeem")]

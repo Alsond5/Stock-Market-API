@@ -27,6 +27,51 @@ namespace StockMarket.Controllers
             return Ok(alerts);
         }
 
+        [HttpGet("{alertId}")]
+        [RoleAuthorize(2)]
+        public async Task<IActionResult> GetAlert(int alertId)
+        {
+            var alert = await _alertServices.GetAlert(alertId);
+            if (alert == null) return NotFound("404");
+
+            return Ok(alert);
+        }
+
+        [HttpPut("{alertId}")]
+        [RoleAuthorize(2)]
+        public async Task<IActionResult> UpdateAlert(int alertId, [FromBody] UpdateAlertRequestDTO alert)
+        {
+            await _alertServices.UpdateAlert(alert);
+
+            return Ok();
+        }
+
+        [HttpPost("create")]
+        [RoleAuthorize(2)]
+        public async Task<IActionResult> CreateAlert([FromBody] CreateAlertRequestDTO alert)
+        {
+            var user = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (user == null) return Unauthorized();
+
+            var userId = int.Parse(user.Value);
+            await _alertServices.CreateAlert(userId, alert);
+
+            return Ok();
+        }
+
+        [HttpDelete("{alertId}")]
+        [RoleAuthorize(2)]
+        public async Task<IActionResult> DeleteAlert(int alertId)
+        {
+            var user = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (user == null) return Unauthorized();
+
+            var userId = int.Parse(user.Value);
+            await _alertServices.DeleteAlert(userId, alertId);
+
+            return Ok();
+        }
+
         [HttpGet("@me/alerts")]
         [Authorize]
         public async Task<IActionResult> GetAlerts()
@@ -56,7 +101,7 @@ namespace StockMarket.Controllers
 
         [HttpGet("@me/alerts/{alertId}")]
         [Authorize]
-        public async Task<IActionResult> GetAlert(int alertId)
+        public async Task<IActionResult> GetUserAlert(int alertId)
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
             if (user == null) return Unauthorized();
@@ -70,7 +115,7 @@ namespace StockMarket.Controllers
 
         [HttpPost("@me/alerts")]
         [Authorize]
-        public async Task<IActionResult> CreateAlert([FromBody] CreateAlertRequestDTO alert)
+        public async Task<IActionResult> CreateUserAlert([FromBody] CreateAlertRequestDTO alert)
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
             if (user == null) return Unauthorized();
@@ -98,7 +143,7 @@ namespace StockMarket.Controllers
 
         [HttpDelete("@me/alerts/{alertId}")]
         [Authorize]
-        public async Task<IActionResult> DeleteAlert(int alertId)
+        public async Task<IActionResult> DeleteUserAlert(int alertId)
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
             if (user == null) return Unauthorized();

@@ -222,24 +222,24 @@ namespace StockMarket.Services
 
         public async Task<UserDTO?> AdminUpdateUserAsync(int id, UpdateUserRequestDTO update) {
             var user = await _userRepository.GetUserByIdAsync(id);
-
             if (user == null) return null;
+
+            Console.WriteLine("Girdi1");
             
             if (update.Password != null) {
                 update.Password = _hashServices.ComputeSha256Hash(update.Password);
                 user.Password = update.Password;
             }
             
-            if (update.Username != null && update.Email != null) {
+            if (update.Username != null && update.Username != user.Username && update.Email != null && update.Email != user.Email) {
                 var checkExisting = await _userRepository.GetUserIfExistingAsync(update.Username, update.Email);
-                
                 if (checkExisting != null) return null;
 
                 user.Username = update.Username;
                 user.Email = update.Email;
             }
             else {
-                if (update.Username != null) {
+                if (update.Username != null && update.Username != user.Username) {
                     var checkExisting = await _userRepository.GetUserByUsernameAsync(update.Username);
 
                     if (checkExisting != null) return null;
@@ -247,7 +247,7 @@ namespace StockMarket.Services
                     user.Username = update.Username;
                 }
 
-                if (update.Email != null) {
+                if (update.Email != null && update.Email != user.Email) {
                     var checkExisting = await _userRepository.GetUserByEmailAsync(update.Email);
 
                     if (checkExisting != null) return null;
@@ -260,8 +260,9 @@ namespace StockMarket.Services
             user.Balance.Amount = update.Balance ?? user.Balance.Amount;
 
             var updatedUser = await _userRepository.UpdateUserAsync(user);
-
             if (updatedUser == null) return null;
+
+            Console.WriteLine("Girdi2");
 
             return new UserDTO {
                 UserId = updatedUser.UserId,

@@ -26,6 +26,13 @@ namespace StockMarket.Services
             return coupons;
         }
 
+        public async Task<Coupon> GetCouponByIdAsync(int couponId)
+        {
+            var coupon = await _couponRepository.GetCouponByIdAsync(couponId);
+
+            return coupon ?? new Coupon();
+        }
+
         public async Task<bool> ReedemCouponAsync(string code, int userId)
         {
             var coupon = await _couponRepository.GetCouponByCodeAsync(code);
@@ -42,6 +49,21 @@ namespace StockMarket.Services
             await _userRepository.UpdateUserAsync(user);
 
             return true;
+        }
+
+        public async Task<Coupon> UpdateCouponAsync(int couponId, UpdateCouponRequestDTO coupon)
+        {
+            var existingCoupon = await _couponRepository.GetCouponByIdAsync(couponId);
+            if (existingCoupon == null) return new Coupon();
+
+            existingCoupon.Amount = coupon.Amount;
+            existingCoupon.ExpiryDate = coupon.ExpiryDate ?? existingCoupon.ExpiryDate;
+            existingCoupon.IsReedemed = coupon.IsReedemed;
+            existingCoupon.Code = coupon.Code ?? existingCoupon.Code;
+
+            var updatedCoupon = await _couponRepository.UpdateCouponAsync(couponId, existingCoupon);
+
+            return updatedCoupon ?? new Coupon();
         }
 
         public async Task<Coupon> CreateCouponAsync(CreateCouponRequestDTO coupon)
@@ -71,6 +93,17 @@ namespace StockMarket.Services
             );
 
             return code;
+        }
+
+        public async Task<bool> DeleteCouponAsync(int couponId)
+        {
+            var coupon = await _couponRepository.GetCouponByIdAsync(couponId);
+
+            if (coupon == null) return false;
+
+            await _couponRepository.DeleteCouponAsync(couponId);
+
+            return true;
         }
     }
 }

@@ -43,7 +43,11 @@ namespace StockMarket.Data.Repositories
             await _stockMarketDBContext.Users.AddAsync(user);
             await _stockMarketDBContext.SaveChangesAsync();
 
-            return user;
+            return await _stockMarketDBContext.Users
+                .Include(u => u.Balance)
+                .Include(u => u.Role)
+                .Include(u => u.Portfolio)
+                .FirstOrDefaultAsync(u => u.UserId == user.UserId);
         }
 
         public async Task<User?> UpdateUserAsync(User user) {
